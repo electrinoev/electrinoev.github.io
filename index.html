@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Galaxy Ride Electrino - Rawat Associates Kotdwara</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #007bff;
+            --secondary: #28a745;
+            --dark: #0f172a;
+            --light: #f8f9fa;
+            --accent: #ffc107;
+            --gradient: linear-gradient(135deg, #007bff, #28a745);
+            --text: #333;
+            --bg: #f0f2f5;
+            --card-bg: #ffffff;
+        }
+        [data-theme="dark"] {
+            --text: #e2e8f0;
+            --bg: #0f172a;
+            --light: #1e293b;
+            --dark: #f8f9fa;
+            --card-bg: #1e293b;
+        }
+
+        * { box-sizing: border-box; }
+        body {
+            margin: 0; padding: 0 0 80px 0;
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            transition: all 0.4s ease;
+            overflow-x: hidden;
+        }
+
+        /* Intro Loader */
+        #intro-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--dark); display: flex; flex-direction: column;
+            justify-content: center; align-items: center; z-index: 9999;
+            transition: opacity 1s ease;
+        }
+        .intro-text {
+            color: var(--accent); font-size: 3.5rem; font-weight: 800;
+            letter-spacing: 6px; animation: pulse 1.5s infinite;
+        }
+        .loader-bar { width: 300px; height: 4px; background: #333; margin-top: 30px; border-radius: 10px; overflow: hidden; }
+        .loader-fill { height: 100%; background: var(--primary); width: 0; animation: load 3s forwards; }
+        @keyframes load { to { width: 100%; } }
+        @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.6; } }
+        body.loaded #intro-overlay { opacity: 0; pointer-events: none; }
+
+        /* Particles Background */
+        #particles-js {
+            position: absolute; width: 100%; height: 100%; top: 0; left: 0;
+            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1558981403-c5f91cbba527?auto=format&fit=crop&q=80');
+            background-size: cover; background-position: center;
+        }
+
+        /* Header */
+        .fixed-header {
+            position: fixed; top: 0; width: 100%;
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(20px);
+            z-index: 1000; padding: 15px 0;
+            box-shadow: 0 4px 30px rgba(0,0,0,0.3);
+            border-bottom: 2px solid var(--primary);
+        }
+        .header-content {
+            max-width: 1200px; margin: 0 auto; padding: 0 20px;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .header-title { font-size: clamp(20px, 5vw, 28px); font-weight: 800; color: var(--accent); margin: 0; }
+        .contact-info { font-size: 14px; color: #fff; opacity: 0.9; }
+        .theme-toggle {
+            background: none; border: none; color: #fff; font-size: 20px; cursor: pointer;
+            padding: 10px; border-radius: 50%; transition: 0.3s;
+        }
+        .theme-toggle:hover { background: rgba(255,255,255,0.1); }
+
+        .hero-banner {
+            height: 100vh; position: relative; display: flex;
+            flex-direction: column; justify-content: center; align-items: center;
+            text-align: center; color: white; padding-top: 80px;
+        }
+        .hero-title { font-size: clamp(2.5rem, 8vw, 5rem); font-weight: 800; margin: 0; }
+        .hero-subtitle { font-size: 1.4rem; margin: 20px 0; opacity: 0.9; }
+        .hero-cta {
+            padding: 15px 40px; background: var(--gradient); color: white;
+            border: none; border-radius: 50px; font-size: 18px; font-weight: 600;
+            cursor: pointer; margin-top: 30px; box-shadow: 0 10px 30px rgba(0,123,255,0.4);
+            transition: 0.4s;
+        }
+        .hero-cta:hover { transform: translateY(-5px); box-shadow: 0 20px 40px rgba(0,123,255,0.6); }
+
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; position: relative; z-index: 2; }
+
+        /* Intro Section */
+        .intro-section {
+            padding: 100px 20px; text-align: center; background: var(--card-bg);
+            border-radius: 30px; margin: 80px auto; max-width: 1100px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.1);
+        }
+        .intro-title { font-size: clamp(2rem, 6vw, 3.5rem); color: var(--text); margin-bottom: 20px; }
+        .intro-text { font-size: 1.2rem; max-width: 800px; margin: 0 auto; opacity: 0.9; line-height: 1.8; }
+
+        .section-title {
+            text-align: center; padding: 50px 0 30px;
+        }
+        .section-title h1 { font-size: clamp(2.2rem, 6vw, 3.5rem); color: var(--text); }
+        .badge-info {
+            background: var(--secondary); color: white; padding: 10px 30px;
+            border-radius: 50px; font-weight: 600; display: inline-block;
+            box-shadow: 0 8px 25px rgba(40,167,69,0.3);
+        }
+
+        .scooter-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+            gap: 35px; padding: 20px 0;
+        }
+        .scooter-card {
+            background: var(--card-bg); border-radius: 28px; overflow: hidden;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.08); transition: all 0.5s ease;
+        }
+        .scooter-card:hover { transform: translateY(-20px); box-shadow: 0 30px 60px rgba(0,0,0,0.15); }
+        .image-box { position: relative; overflow: hidden; cursor: pointer; }
+        .scooter-image { width: 100%; height: 280px; object-fit: contain; background: #fdfdfd; transition: transform 0.6s ease; }
+        .image-box:hover .scooter-image { transform: scale(1.1); }
+        .overlay-icon {
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            font-size: 40px; color: white; opacity: 0; transition: 0.4s;
+            background: rgba(0,0,0,0.5); width: 70px; height: 70px; border-radius: 50%;
+            display: grid; place-items: center;
+        }
+        .image-box:hover .overlay-icon { opacity: 1; }
+
+        /* New Gallery Styles */
+        .gallery {
+            display: flex;
+            overflow-x: auto;
+            gap: 12px;
+            padding: 15px 30px 0;
+            scrollbar-width: thin;
+        }
+        .gallery img {
+            width: 140px;
+            height: 110px;
+            object-fit: contain;
+            border-radius: 12px;
+            border: 2px solid #eee;
+            transition: transform 0.3s;
+        }
+        .gallery img:hover { transform: scale(1.05); }
+
+        .info-box { padding: 20px 30px 10px; }
+        .model-name {
+            font-size: 26px; font-weight: 700; color: var(--text);
+            display: flex; justify-content: space-between; align-items: center; cursor: pointer;
+        }
+        .model-name::after { content: "⊕"; font-size: 24px; color: var(--primary); transition: 0.4s; }
+        .model-name.active::after { transform: rotate(45deg); color: #ff4757; }
+
+        .price-tag { font-size: 32px; color: var(--secondary); font-weight: 800; margin: 15px 0; }
+        .details-content {
+            max-height: 0; overflow: hidden; transition: max-height 0.6s ease;
+            background: rgba(0,123,255,0.05); border-radius: 18px; margin-top: 15px;
+        }
+        .details-content ul { list-style: none; padding: 20px; margin: 0; }
+        .details-content li {
+            padding: 12px 0; border-bottom: 1px dashed #cbd5e1;
+            display: flex; justify-content: space-between; font-size: 15px;
+        }
+        .details-content li span { font-weight: 600; color: #64748b; }
+
+        .actions {
+            display: grid; grid-template-columns: 1fr;
+            gap: 15px;
+            padding: 0 30px 30px;
+        }
+        .btn {
+            padding: 16px; border-radius: 16px; font-weight: 700;
+            text-decoration: none; display: flex; align-items: center;
+            justify-content: center; gap: 10px; font-size: 15px; transition: 0.4s;
+            cursor: pointer;
+            border: none;
+        }
+        .btn-whatsapp { background: var(--secondary); color: white; }
+        .btn:hover { transform: scale(1.05); opacity: 0.95; }
+
+        /* Image Modal */
+        .img-modal {
+            display: none; position: fixed; z-index: 3000; top: 0; left: 0;
+            width: 100%; height: 100%; background: rgba(0,0,0,0.95);
+            justify-content: center; align-items: center;
+        }
+        .img-modal img { max-width: 90%; max-height: 90vh; border-radius: 20px; }
+        .close-img { position: absolute; top: 30px; right: 40px; font-size: 40px; color: white; cursor: pointer; }
+
+        /* Testimonials */
+        .testimonials { margin: 100px 0; }
+        .testi-carousel { position: relative; overflow: hidden; border-radius: 25px; margin: 50px 0; box-shadow: 0 15px 40px rgba(0,0,0,0.1); }
+        .testi-slides { display: flex; transition: transform 0.6s ease; }
+        .testi-card {
+            min-width: 100%; padding: 60px 40px; background: var(--card-bg);
+            border-radius: 25px; text-align: center; font-size: 18px; line-height: 1.8;
+        }
+        .testi-card::before { content: '“'; font-size: 100px; color: #e2e8f0; position: absolute; top: 20px; left: 50%; transform: translateX(-50%); opacity: 0.5; }
+        .author { margin-top: 30px; font-weight: 700; color: var(--primary); }
+
+        /* Test Ride Modal */
+        .testride-modal {
+            display: none; position: fixed; z-index: 3000; top: 0; left: 0;
+            width: 100%; height: 100%; background: rgba(0,0,0,0.8);
+            justify-content: center; align-items: center; padding: 20px;
+        }
+        .testride-form {
+            background: var(--card-bg); padding: 30px; border-radius: 20px;
+            max-width: 400px; width: 100%; box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+            text-align: center;
+        }
+        .testride-form h3 { margin-top: 0; color: var(--text); }
+        .testride-form input, .testride-form select {
+            width: 100%; padding: 12px; margin: 10px 0; border-radius: 10px;
+            border: 1px solid #cbd5e1; font-size: 16px;
+        }
+        .testride-form button {
+            background: var(--secondary); color: white; padding: 14px;
+            border: none; border-radius: 10px; width: 100%; font-size: 16px;
+            cursor: pointer; margin-top: 10px;
+        }
+        .close-modal {
+            position: absolute; top: 15px; right: 25px; font-size: 30px;
+            color: #aaa; cursor: pointer;
+        }
+
+        /* Map Modal */
+        .map-modal {
+            display: none; position: fixed; z-index: 3000; top: 0; left: 0;
+            width: 100%; height: 100%; background: rgba(0,0,0,0.9);
+            justify-content: center; align-items: center; padding: 20px;
+        }
+        .map-container {
+            width: 90%; max-width: 800px; height: 80vh; border-radius: 20px;
+            overflow: hidden; box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+        }
+        .map-container iframe {
+            width: 100%; height: 100%; border: none;
+        }
+        .close-map {
+            position: absolute; top: 20px; right: 30px; font-size: 40px;
+            color: white; cursor: pointer; z-index: 3001;
+        }
+
+        /* Bottom Navigation Bar */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(20px);
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            padding: 12px 0;
+            box-shadow: 0 -4px 20px rgba(0,0,0,0.3);
+            border-top: 1px solid var(--primary);
+            z-index: 999;
+        }
+        .nav-item {
+            color: white;
+            text-align: center;
+            font-size: 12px;
+            cursor: pointer;
+            transition: 0.3s;
+            opacity: 0.9;
+        }
+        .nav-item:hover {
+            opacity: 1;
+            transform: translateY(-3px);
+        }
+        .nav-item i {
+            font-size: 24px;
+            display: block;
+            margin-bottom: 5px;
+        }
+        .nav-item.whatsapp { color: #25D366; }
+        .nav-item.map { color: #db4437; }
+        .nav-item.testride { color: #007bff; }
+
+        @media (max-width: 480px) {
+            .nav-item span { font-size: 11px; }
+            .nav-item i { font-size: 22px; }
+            .gallery img { width: 110px; height: 90px; }
+        }
+
+        footer {
+            background: var(--dark); color: #cbd5e1; text-align: center;
+            padding: 80px 20px; margin-top: 100px;
+        }
+        footer b { color: var(--accent); }
+    </style>
+</head>
+<body>
+
+    <!-- Intro Loader -->
+    <div id="intro-overlay">
+        <div class="intro-text">ELECTRINO</div>
+        <div class="loader-bar"><div class="loader-fill"></div></div>
+        <p style="color: #aaa; margin-top: 20px; font-size:14px;">Rawat Associates Kotdwara - Powering Your Ride</p>
+    </div>
+
+    <!-- Particles -->
+    <div id="particles-js"></div>
+
+    <header class="fixed-header">
+        <div class="header-content">
+            <div>
+                <h1 class="header-title">⚡ GALAXY RIDE ELECTRINO</h1>
+                <div class="contact-info">Rawat Associates Kotdwara || 📞 8941875809, 7906109154</div>
+            </div>
+            <button class="theme-toggle" onclick="toggleTheme()" title="Toggle Dark/Light Mode">
+                <i class="fas fa-moon"></i>
+            </button>
+        </div>
+    </header>
+
+    <section class="hero-banner">
+        <h2 class="hero-title" data-aos="zoom-in">Future of Mobility is Here</h2>
+        <p class="hero-subtitle" data-aos="fade-up" data-aos-delay="200">Eco-Friendly • High Performance • Zero Maintenance</p>
+        <button class="hero-cta" data-aos="fade-up" data-aos-delay="400" onclick="scrollToIntro()">
+            Discover Rawat Associates <i class="fas fa-arrow-down"></i>
+        </button>
+    </section>
+
+    <div class="container">
+
+        <!-- Intro Section -->
+        <div class="intro-section" data-aos="fade-up">
+            <h2 class="intro-title">Welcome to Electrino Rawat Associates</h2>
+            <p class="intro-text">
+                Kotdwara का सबसे भरोसेमंद Authorized Electrino Dealer।<br>
+                हम आपको बेस्ट क्वालिटी इलेक्ट्रिक स्कूटर, और बेहतरीन आफ्टर-सेल्स सर्विस प्रदान करते हैं।<br><br>
+                पर्यावरण के प्रति जागरूक रहते हुए पेट्रोल का खर्चा बचाएं और भविष्य की सवारी का आनंद लें।
+            </p>
+        </div>
+
+        <div class="section-title" data-aos="fade-up">
+            <h1>Electrino Electric Scooters</h1>
+            <div class="badge-info">Kotdwara's Trusted Authorized Hub</div>
+        </div>
+
+        <div class="scooter-grid">
+
+            <!-- 1. Electrino One -->
+            <div class="scooter-card" data-aos="fade-up">
+                <div class="image-box" onclick="openImage('https://www.electrino.in/wp-content/uploads/2024/05/Electrino-One.jpg')">
+                    <img src="https://www.electrino.in/wp-content/uploads/2024/05/Electrino-One.jpg" class="scooter-image" alt="Electrino One">
+                    <div class="overlay-icon"><i class="fas fa-search-plus"></i></div>
+                </div>
+
+                <!-- New Gallery -->
+                <div class="gallery">
+                    <img src="https://www.electrino.in/wp-content/uploads/2024/05/Electrino-One-2.jpg" alt="Front" onclick="openImage(this.src)">
+                    <img src="https://www.electrino.in/wp-content/uploads/2024/05/Electrino-One-3.jpg" alt="Left" onclick="openImage(this.src)">
+                    <img src="https://www.electrino.in/wp-content/uploads/2024/05/Electrino-One-4.jpg" alt="Back" onclick="openImage(this.src)">
+                    <img src="https://www.electrino.in/wp-content/uploads/2024/05/Electrino-One.jpg" alt="Right" onclick="openImage(this.src)">
+                </div>
+
+                <div class="info-box">
+                    <div class="model-name" onclick="toggleDetails(this)">Electrino One</div>
+                    <div class="price-tag">₹48,000</div>
+                    <div class="details-content">
+                        <ul>
+                            <li><span>Motor</span> Brushless DC Hub</li>
+                            <li><span>Controller</span> 30Amp Smart Wireless</li>
+                            <li><span>Range</span> 70* Km</li>
+                            <li><span>Reverse Gear</span> Yes</li>
+                            <li><span>Battery</span> 60V Lithium Ion</li>
+                            <li><span>Warranty</span> 3 Years (Battery)</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="actions">
+                    <button class="btn btn-whatsapp" onclick="checkPincode('Electrino One')">
+                        <i class="fab fa-whatsapp"></i> Book Now
+                    </button>
+                </div>
+            </div>
+
+            <!-- 2. Electrino Dual -->
+            <div class="scooter-card" data-aos="fade-up" data-aos-delay="100">
+                <div class="image-box" onclick="openImage('https://www.electrino.in/wp-content/uploads/2024/05/Electrino-Dual_1.jpg')">
+                    <img src="https://www.electrino.in/wp-content/uploads/2024/05/Electrino-Dual_1.jpg" class="scooter-image" alt="Electrino Dual">
+                    <div class="overlay-icon"><i class="fas fa-search-plus"></i></div>
+                </div>
+
+                <div class="gallery">
+                    <img src="https://www.electrino.in/wp-content/uploads/2024/05/Electrino-Dual_2.jpg" alt="Front" onclick="openImage(this.src)">
+                    <img src="https://www.electrino.in/wp-content/uploads/2024/05/Electrino-Dual_3.jpg" alt="Left" onclick="openImage(this.src)">
+                    <img src="https://www.electrino.in/wp-content/uploads/2024/05/Electrino-Dual_4.jpg" alt="Back" onclick="openImage(this.src)">
+                    <img src="https://www.electrino.in/wp-content/uploads/2024/05/Electrino-Dual_3.jpg" alt="Right" onclick="openImage(this.src)">
+                </div>
+
+                <div class="info-box">
+                    <div class="model-name" onclick="toggleDetails(this)">Electrino Dual</div>
+                    <div class="price-tag">₹52,000</div>
+                    <div class="details-content">
+                        <ul>
+                            <li><span>Motor</span> Brushless DC Hub</li>
+                            <li><span>Controller</span> 40Amp Smart</li>
+                            <li><span>Range</span> 70* Km</li>
+                            <li><span>Tyres</span> 12" Front / 10" Rear</li>
+                            <li><span>Warranty</span> 3 Years (Battery)</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="actions">
+                    <button class="btn btn-whatsapp" onclick="checkPincode('Electrino Dual')">
+                        <i class="fab fa-whatsapp"></i> Book Now
+                    </button>
+                </div>
+            </div>
+
+            <!-- 3. Electrino Core -->
+            <div class="scooter-card" data-aos="fade-up" data-aos-delay="200">
+                <div class="image-box" onclick="openImage('https://www.electrino.in/wp-content/uploads/2024/05/4-1.jpg')">
+                    <img src="https://www.electrino.in/wp-content/uploads/2024/05/4-1.jpg" class="scooter-image" alt="Electrino Core">
+                    <div class="overlay-icon"><i class="fas fa-search-plus"></i></div>
+                </div>
+
+                <div class="gallery">
+                    <img src="https://www.electrino.in/wp-content/uploads/2024/05/3-1-300x300.jpg" alt="Front" onclick="openImage(this.src)">
+                    <img src="https://www.electrino.in/wp-content/uploads/2024/05/2-1.jpg" alt="Left" onclick="openImage(this.src)">
+                    <img src="https://www.electrino.in/wp-content/uploads/2024/05/1-1.jpg" alt="Back" onclick="openImage(this.src)">
+                    <img src="https://www.electrino.in/wp-content/uploads/2024/05/2-1.jpg" alt="Right" onclick="openImage(this.src)">
+                </div>
+
+                <div class="info-box">
+                    <div class="model-name" onclick="toggleDetails(this)">Electrino Core</div>
+                    <div class="price-tag">₹67,500</div>
+                    <div class="details-content">
+                        <ul>
+                            <li><span>Brakes</span> Double Disc</li>
+                            <li><span>Range</span> 100* Km</li>
+                            <li><span>Tyres</span> 90/90-12 Front & Rear</li>
+                            <li><span>Battery</span> Lithium Ion 60V</li>
+                            <li><span>Warranty</span> 3 Years (Battery)</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="actions">
+                    <button class="btn btn-whatsapp" onclick="checkPincode('Electrino Core')">
+                        <i class="fab fa-whatsapp"></i> Book Now
+                    </button>
+                </div>
+            </div>
+
+            <!-- 4. Electrino Crown -->
+            <div class="scooter-card" data-aos="fade-up">
+                <div class="image-box" onclick="openImage('https://www.electrino.in/wp-content/uploads/2024/05/Electrino-Crown_4.jpg')">
+                    <img src="https://www.electrino.in/wp-content/uploads/2024/05/Electrino-Crown_4.jpg" class="scooter-image" alt="Electrino Crown">
+                    <div class="overlay-icon"><i class="fas fa-search-plus"></i></div>
+                </div>
+
+                <div class="gallery">
+                    <img src="https://www.electrino.in/wp-content/uploads/2024/05/Electrino-Crown_3.jpg" alt="Front" onclick="openImage(this.src)">
+                    <img src="https://www.electrino.in/wp-content/uploads/2024/05/Electrino-Crown_2.jpg" alt="Left" onclick="openImage(this.src)">
+                    <img src="https://www.electrino.in/wp-content/uploads/2024/05/Electrino-Crown.jpg" alt="Back" onclick="openImage(this.src)">
+                    <img src="https://www.electrino.in/wp-content/uploads/2024/05/Electrino-Crown_2.jpg" alt="Right" onclick="openImage(this.src)">
+                </div>
+
+                <div class="info-box">
+                    <div class="model-name" onclick="toggleDetails(this)">Electrino Crown</div>
+                    <div class="price-tag">₹70,500</div>
+                    <div class="details-content">
+                        <ul>
+                            <li><span>Controller</span> 40Amp Wireless</li>
+                            <li><span>Range</span> 100* Km</li>
+                            <li><span>Headlight</span> LED Premium</li>
+                            <li><span>Brakes</span> Double Disc</li>
+                            <li><span>Warranty</span> 3 Years (Battery)</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="actions">
+                    <button class="btn btn-whatsapp" onclick="checkPincode('Electrino Crown')">
+                        <i class="fab fa-whatsapp"></i> Book Now
+                    </button>
+                </div>
+            </div>
+
+            <!-- 5. Electrino Active Pro -->
+            <div class="scooter-card" data-aos="fade-up" data-aos-delay="100">
+                <div class="image-box" onclick="openImage('https://www.electrino.in/wp-content/uploads/2024/05/4.jpg')">
+                    <img src="https://www.electrino.in/wp-content/uploads/2024/05/4.jpg" class="scooter-image" alt="Electrino Active Pro">
+                    <div class="overlay-icon"><i class="fas fa-search-plus"></i></div>
+                </div>
+
+                <div class="gallery">
+                    <img src="https://www.electrino.in/wp-content/uploads/2024/05/3.jpg" alt="Front" onclick="openImage(this.src)">
+                    <img src="https://www.electrino.in/wp-content/uploads/2024/05/2.jpg" alt="Left" onclick="openImage(this.src)">
+                    <img src="https://www.electrino.in/wp-content/uploads/2024/05/1.jpg" alt="Back" onclick="openImage(this.src)">
+                    <img src="https://www.electrino.in/wp-content/uploads/2024/05/2.jpg" alt="Right" onclick="openImage(this.src)">
+                </div>
+
+                <div class="info-box">
+                    <div class="model-name" onclick="toggleDetails(this)">Electrino Active Pro</div>
+                    <div class="price-tag">₹70,500</div>
+                    <div class="details-content">
+                        <ul>
+                            <li><span>Motor</span> 250 Watt High Efficiency</li>
+                            <li><span>Range</span> 100 Km</li>
+                            <li><span>Brakes</span> Double Disc</li>
+                            <li><span>Modes</span> Eco, Normal, Sports</li>
+                            <li><span>Warranty</span> 3 Years (Battery)</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="actions">
+                    <button class="btn btn-whatsapp" onclick="checkPincode('Electrino Active Pro')">
+                        <i class="fab fa-whatsapp"></i> Book Now
+                    </button>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Customer Testimonials -->
+        <div class="testimonials" data-aos="fade-up">
+            <h2 style="text-align:center; margin-bottom:50px;">What Our Customers Say</h2>
+            <div class="testi-carousel">
+                <div class="testi-slides" id="testiSlides">
+                    <div class="testi-card">
+                        "Excellent build quality and great range. Savings on petrol are huge!"<br><br>
+                        <div class="author">- Rahul Singh</div>
+                    </div>
+                    <div class="testi-card">
+                        "Rawat Associates provided a very smooth buying experience. Highly recommended."<br><br>
+                        <div class="author">- Meena Devi</div>
+                    </div>
+                    <div class="testi-card">
+                        "The Active Pro model is very powerful. Perfect for Kotdwara roads."<br><br>
+                        <div class="author">- Vicky Rawat</div>
+                    </div>
+                    <div class="testi-card">
+                        "Service after sale is outstanding. Battery backup is as promised!"<br><br>
+                        <div class="author">- Priya Sharma</div>
+                    </div>
+                    <div class="testi-card">
+                        "Best decision to go electric. Zero maintenance and super silent ride."<br><br>
+                        <div class="author">- Anil Kumar</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Image Modal -->
+    <div class="img-modal" id="imgModal">
+        <span class="close-img" onclick="closeImage()">×</span>
+        <img id="modalImg">
+    </div>
+
+    <!-- Test Ride Modal -->
+    <div class="testride-modal" id="testrideModal">
+        <div class="testride-form">
+            <span class="close-modal" onclick="closeTestRideModal()">×</span>
+            <h3>🚀 Book Free Test Ride</h3>
+            <p style="color: #666; margin-bottom: 20px;">Rawat Associates Kotdwara</p>
+            <input type="text" id="trName" placeholder="Your Name" required>
+            <input type="tel" id="trPhone" placeholder="Your Phone Number" required>
+            <select id="trModel" required>
+                <option value="">Select Scooter Model</option>
+                <option value="Electrino One">Electrino One (Test Ride Free) </option>
+                <option value="Electrino Dual">Electrino Dual (Test Ride Free)</option>
+            </select>
+            <button onclick="sendTestRideWA()">Send via WhatsApp</button>
+        </div>
+    </div>
+
+    <!-- Location Map Modal -->
+    <div class="map-modal" id="mapModal">
+        <span class="close-map" onclick="closeMapModal()">×</span>
+        <div style="text-align:center; color:white; padding:20px;">
+            <h3>📍 Rawat Associates Kotdwara Location</h3>
+            <input type="text" id="directionsInput" placeholder="Enter your starting address (e.g. Najibabad, Pauri)" style="width:80%; max-width:500px; padding:12px; border-radius:10px; border:none; margin:10px 0;">
+            <button onclick="updateDirections()" style="padding:12px 20px; background:var(--secondary); color:white; border:none; border-radius:10px; cursor:pointer;">Get Directions</button>
+            <p style="margin-top:10px; font-size:14px;">Leave blank for location view</p>
+        </div>
+        <div class="map-container">
+            <iframe id="mapIframe" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3457.946858699295!2d78.524618076042!3d29.756789975071!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390965002e62a61b%3A0x10f22a8632df068!2sGALAXY%20RIDE%20ELECTRINO%20EV%20RAWAT%20ASSOCIATES!5e0!3m2!1sen!2sin!4v1728000000000" 
+                    allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade">
+            </iframe>
+        </div>
+    </div>
+
+    <!-- Bottom Navigation Bar -->
+    <div class="bottom-nav">
+        <div class="nav-item whatsapp" onclick="window.open('https://wa.me/918941875809', '_blank')">
+            <i class="fab fa-whatsapp"></i>
+            <span>WhatsApp</span>
+        </div>
+        <div class="nav-item testride" onclick="openTestRideModal()">
+            <i class="fas fa-motorcycle"></i>
+            <span>Test Ride</span>
+        </div>
+        <div class="nav-item map" onclick="openMapModal()">
+            <i class="fas fa-map-marker-alt"></i>
+            <span>Location</span>
+        </div>
+    </div>
+
+    <footer>
+        <p><b>GALAXY RIDE ELECTRINO - RAWAT ASSOCIATES</b></p>
+        <p>© 2026 All Rights Reserved. | Kotdwara, Uttarakhand</p>
+        <div style="margin-top: 20px; opacity: 0.6; font-size: 12px;">Authorized Dealer of Electrino India</div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init({ duration: 1000, once: true });
+
+        // Loader
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                document.body.classList.add('loaded');
+            }, 3000);
+        });
+
+        // Particles
+        particlesJS("particles-js", {
+            particles: { number: { value: 80 }, color: { value: "#ffffff" }, shape: { type: "circle" }, opacity: { value: 0.5 }, size: { value: 3 }, line_linked: { enable: true, distance: 150, color: "#ffffff", opacity: 0.2 }, move: { enable: true, speed: 2 } },
+            interactivity: { detect_on: "canvas", events: { onhover: { enable: true, mode: "repulse" } } },
+            retina_detect: true
+        });
+
+        // Theme Toggle
+        function toggleTheme() {
+            const theme = document.body.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+            document.body.setAttribute('data-theme', theme);
+            localStorage.setItem('theme', theme);
+        }
+        if (localStorage.getItem('theme') === 'dark') document.body.setAttribute('data-theme', 'dark');
+
+        // Scroll to Intro
+        function scrollToIntro() {
+            document.querySelector('.intro-section').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Details Toggle
+        function toggleDetails(el) {
+            el.classList.toggle('active');
+            const content = el.nextElementSibling.nextElementSibling;
+            content.style.maxHeight = content.style.maxHeight ? null : content.scrollHeight + 50 + "px";
+        }
+
+        // Image Modal
+        function openImage(src) {
+            document.getElementById('imgModal').style.display = 'flex';
+            document.getElementById('modalImg').src = src;
+        }
+        function closeImage() {
+            document.getElementById('imgModal').style.display = 'none';
+        }
+
+        // Testimonial Carousel
+        let testiIndex = 0;
+        const testiSlides = document.getElementById('testiSlides');
+        const totalTesti = testiSlides.children.length;
+        setInterval(() => {
+            testiIndex = (testiIndex + 1) % totalTesti;
+            testiSlides.style.transform = `translateX(-${testiIndex * 100}%)`;
+        }, 6000);
+
+        // Test Ride Modal
+        function openTestRideModal() {
+            document.getElementById('testrideModal').style.display = 'flex';
+        }
+        function closeTestRideModal() {
+            document.getElementById('testrideModal').style.display = 'none';
+        }
+
+        function sendTestRideWA() {
+            const name = document.getElementById('trName').value.trim();
+            const phone = document.getElementById('trPhone').value.trim();
+            const model = document.getElementById('trModel').value;
+
+            if (!name || !phone || !model) {
+                alert('Please fill all fields!');
+                return;
+            }
+
+            const message = `Hello Rawat Associates,%0A%0AI want to book a FREE TEST RIDE.%0A%0AName: ${name}%0APhone: ${phone}%0AModel: ${model}%0A%0AThank you!`;
+            const waLink = `https://wa.me/918941875809?text=${message}`;
+            window.open(waLink, '_blank');
+            closeTestRideModal();
+        }
+
+        // Map Modal
+        function openMapModal() {
+            document.getElementById('mapModal').style.display = 'flex';
+            document.getElementById('directionsInput').value = '';
+            updateDirections();
+        }
+        function closeMapModal() {
+            document.getElementById('mapModal').style.display = 'none';
+        }
+
+        function updateDirections() {
+            const input = document.getElementById('directionsInput').value.trim();
+            const iframe = document.getElementById('mapIframe');
+            const placeUrl = 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3457.946858699295!2d78.524618076042!3d29.756789975071!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390965002e62a61b%3A0x10f22a8632df068!2sGALAXY%20RIDE%20ELECTRINO%20EV%20RAWAT%20ASSOCIATES!5e0!3m2!1sen!2sin!4v1728000000000';
+
+            if (input === '') {
+                iframe.src = placeUrl;
+            } else {
+                iframe.src = `https://www.google.com/maps/embed/v1/directions?key=&origin=${encodeURIComponent(input)}&destination=place_id:ChIJG6YiziAFDk4RCAbfYiaK8BA&mode=driving`;
+            }
+        }
+
+        // New Pincode Check + Color Option
+        const validPincodes = [
+            '246149', // Kotdwara
+            '246763', // Najibabad
+            '246121', // Amola, etc.
+            '246155', // Lansdowne
+            '246124', // Dwarikhal
+            '246128', // Bamoli
+            '246142', // Jahrikhal
+            '246162', // Dadamandi
+            '246144'  // Kandakhal
+        ];
+
+        function checkPincode(modelName) {
+            const pin = prompt("Please enter your PINCODE for delivery check:");
+            if (!pin) return;
+
+            if (validPincodes.includes(pin.trim())) {
+                const color = prompt("Great! Delivery available in your area.\n\nWhich color do you prefer?\n(Black / White / Red / Blue / Grey etc.)", "Black");
+                const finalColor = color ? color.trim() : "Not specified";
+
+                const message = `Hello Rawat Associates,%0A%0AI want to book/order *${modelName}*%0APINCODE: ${pin}%0APreferred Color: ${finalColor}%0A%0APlease send available colors photos & confirm price.%0AThank you!`;
+                const waLink = `https://wa.me/918941875809?text=${message}`;
+                window.open(waLink, '_blank');
+            } else {
+                alert("Sorry! Currently delivery not available at this PINCODE.\nPlease contact us directly on WhatsApp for more information.");
+                window.open('https://wa.me/918941875809', '_blank');
+            }
+        }
+
+        // Outside click close
+        window.onclick = function(e) {
+            const testrideModal = document.getElementById('testrideModal');
+            const mapModal = document.getElementById('mapModal');
+            const imgModal = document.getElementById('imgModal');
+
+            if (e.target === testrideModal) closeTestRideModal();
+            if (e.target === mapModal) closeMapModal();
+            if (e.target === imgModal) closeImage();
+        }
+    </script>
+</body>
+</html>
