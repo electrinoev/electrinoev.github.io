@@ -9,19 +9,52 @@
     <style>
         :root { 
             --p: #4f46e5; 
-            --dark: #0f172a; /* Deep Navy for Headings */
+            --dark: #0f172a; 
             --text-light: #64748b;
         }
         * { box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; transition: 0.3s ease; }
         
-        /* --- VISIBLE DUAL TONE BACKGROUND --- */
+        /* --- LOADING SCREEN CSS --- */
+        #loader {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            background: #ffffff;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        .bolt-icon {
+            font-size: 50px;
+            color: var(--p);
+            animation: pulse 1s infinite alternate;
+        }
+        .loader-text {
+            margin-top: 15px;
+            font-weight: 800;
+            color: var(--dark);
+            letter-spacing: 2px;
+            font-size: 14px;
+        }
+        @keyframes pulse {
+            from { transform: scale(1); opacity: 1; }
+            to { transform: scale(1.2); opacity: 0.5; }
+        }
+        /* Fade out class */
+        .fade-out {
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.5s ease, visibility 0.5s ease;
+        }
+
         body { 
             margin: 0; 
             height: 100vh; 
             display: flex; 
             flex-direction: column; 
             overflow: hidden;
-            /* Stronger Dual Tone Contrast */
             background: linear-gradient(135deg, #ffffff 50%, #6366f1 50%); 
         }
 
@@ -44,7 +77,6 @@
 
         .dashboard { display: flex; flex: 1; overflow: hidden; gap: 12px; padding: 12px; }
 
-        /* Left Sidebar - Now more solid for readability */
         .sidebar { 
             width: 100px; 
             background: rgba(255,255,255,0.95); 
@@ -67,7 +99,6 @@
         .m-card img { width: 50px; height: 35px; object-fit: contain; }
         .m-card h3 { margin: 5px 0 0; font-size: 10px; font-weight: 800; color: var(--dark); }
 
-        /* Right Content - Solid White Panel for clear text */
         .content { 
             flex: 1; 
             overflow-y: auto; 
@@ -84,12 +115,10 @@
         }
         #mainView { width: 100%; max-height: 220px; object-fit: contain; filter: drop-shadow(0 10px 15px rgba(0,0,0,0.1)); }
         
-        /* Titles - Now in Dark Navy for Visibility */
         .info-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
         .info-row h2 { font-size: 26px; margin: 0; font-weight: 800; color: var(--dark); }
         .price-badge { background: var(--p); color: #fff; padding: 8px 20px; border-radius: 50px; font-weight: 800; font-size: 20px; }
 
-        /* Spec Tiles - Bold Text and Icons */
         .spec-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; }
         .spec-tile { 
             background: #f8fafc; padding: 12px; border-radius: 12px; 
@@ -122,11 +151,16 @@
 </head>
 <body>
 
+<div id="loader">
+    <div class="bolt-icon"><i class="fas fa-bolt"></i></div>
+    <div class="loader-text">RAWAT ASSOCIATES</div>
+</div>
+
 <header>
     <div class="shop-info">
         <h1>Rawat Associates</h1>
         <p>Electrino Electric Scooters</p>
-        <p>Kotdwara,Uttarakhand</p>
+        <p>Kotdwara, Uttarakhand</p>
     </div>
     <div class="contact-box">
         <a href="tel:8941875809"><i class="fas fa-phone"></i> 8941875809</a>
@@ -153,6 +187,15 @@
 <a href="#" class="btn-wa" id="waLink"><i class="fab fa-whatsapp"></i> ENQUIRE NOW</a>
 
 <script>
+// --- LOADING LOGIC ---
+window.addEventListener("load", function() {
+    const loader = document.getElementById("loader");
+    // 1.5 seconds ka delay taaki loading ek baar saaf dikhe
+    setTimeout(() => {
+        loader.classList.add("fade-out");
+    }, 1500);
+});
+
 const masterFeatures = [
     {id: "range", l: "Max Range", i: "fa-road", c: "#6366f1"},
     {id: "motor", l: "Motor", i: "fa-bolt", c: "#f59e0b"},
