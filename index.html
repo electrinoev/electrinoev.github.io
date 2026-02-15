@@ -11,9 +11,15 @@
             --p: #4f46e5; 
             --dark: #0f172a; 
             --text-light: #64748b;
+            --success: #22c55e;
+            --danger: #ef4444;
         }
         * { box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; transition: 0.3s ease; }
         
+        /* --- [REVEAL ANIMATION] --- */
+        .reveal { opacity: 0; transform: translateY(20px); transition: 0.8s all ease; }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+
         /* --- LOADING SCREEN CSS --- */
         #loader {
             position: fixed;
@@ -42,7 +48,6 @@
             from { transform: scale(1); opacity: 1; }
             to { transform: scale(1.2); opacity: 0.5; }
         }
-        /* Fade out class */
         .fade-out {
             opacity: 0;
             visibility: hidden;
@@ -69,6 +74,20 @@
         .shop-info h1 { margin: 0; font-size: 18px; font-weight: 800; color: var(--dark); }
         .shop-info p { margin: 0; font-size: 10px; font-weight: 700; color: var(--p); text-transform: uppercase; }
         
+        /* --- [TRUST BAR CSS] --- */
+        .trust-bar { 
+            display: flex; justify-content: space-around; background: #f8fafc; 
+            padding: 8px 10px; border-bottom: 1px solid #e2e8f0; z-index: 90;
+        }
+        .trust-item { font-size: 10px; font-weight: 700; color: var(--dark); display: flex; align-items: center; gap: 5px; }
+        .trust-item i { color: var(--p); }
+
+        /* --- [SMART STATUS CSS] --- */
+        .status-wrapper { text-align: center; padding: 10px 0 5px 0; background: transparent; z-index: 80; }
+        .status-badge { font-size: 11px; font-weight: 800; padding: 4px 12px; border-radius: 50px; display: inline-flex; align-items: center; gap: 6px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        .open-bg { background: #dcfce7; color: var(--success); }
+        .closed-bg { background: #fee2e2; color: var(--danger); }
+
         .contact-box a { 
             display: block; color: var(--dark); text-decoration: none; 
             font-weight: 800; font-size: 12px; margin-bottom: 2px;
@@ -106,6 +125,7 @@
             background: #ffffff; 
             border-radius: 20px; 
             box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            transition: opacity 0.3s ease;
         }
         
         .product-hero { 
@@ -168,18 +188,28 @@
     </div>
 </header>
 
+<div class="trust-bar">
+    <div class="trust-item"><i class="fas fa-check-circle"></i> Genuine Electrino</div>
+    <div class="trust-item"><i class="fas fa-certificate"></i> 3yr Warranty</div>
+    <div class="trust-item"><i class="fas fa-hand-holding-heart"></i> Local Service</div>
+</div>
+
+<div class="status-wrapper">
+    <div id="status-display"></div>
+</div>
+
 <div class="dashboard">
     <div class="sidebar" id="sidebarList"></div>
-    <div class="content">
-        <div class="product-hero">
+    <div class="content" id="mainContent">
+        <div class="product-hero reveal">
             <img id="mainView" src="">
             <div style="display:flex; justify-content:center; gap:8px; margin-top:15px;" id="thumbList"></div>
         </div>
-        <div class="info-row">
+        <div class="info-row reveal">
             <h2 id="mName">Model Name</h2>
             <div class="price-badge" id="mPrice">₹0</div>
         </div>
-        <div class="spec-grid" id="mSpecs"></div>
+        <div class="spec-grid reveal" id="mSpecs"></div>
         <div style="height: 80px;"></div>
     </div>
 </div>
@@ -187,12 +217,32 @@
 <a href="#" class="btn-wa" id="waLink"><i class="fab fa-whatsapp"></i> ENQUIRE NOW</a>
 
 <script>
-// --- LOADING LOGIC ---
+function updateStatus() {
+    const now = new Date();
+    const day = now.getDay(); 
+    const hour = now.getHours();
+    const container = document.getElementById('status-display');
+    
+    if (day === 6) { 
+        container.innerHTML = `<span class="status-badge closed-bg"><i class="fas fa-calendar-times"></i> Closed Today</span>`;
+    } else if (hour >= 9 && hour < 20) { 
+        container.innerHTML = `<span class="status-badge open-bg"><i class="fas fa-door-open"></i> Open Now (9am - 8pm)</span>`;
+    } else {
+        container.innerHTML = `<span class="status-badge closed-bg"><i class="fas fa-moon"></i> Closed Now</span>`;
+    }
+}
+
+function triggerReveal() {
+    const items = document.querySelectorAll('.reveal');
+    items.forEach(item => item.classList.add('active'));
+}
+
 window.addEventListener("load", function() {
+    updateStatus();
     const loader = document.getElementById("loader");
-    // 1.5 seconds ka delay taaki loading ek baar saaf dikhe
     setTimeout(() => {
         loader.classList.add("fade-out");
+        triggerReveal();
     }, 1500);
 });
 
@@ -222,23 +272,23 @@ const masterFeatures = [
 const modelData = [
     {
         name: "Electrino One", price: "48,000", imgs: ["https://www.electrino.in/wp-content/uploads/2024/05/Electrino-One.jpg", "https://www.electrino.in/wp-content/uploads/2024/05/Electrino-One-2.jpg", "https://www.electrino.in/wp-content/uploads/2024/05/Electrino-One-3.jpg", "https://www.electrino.in/wp-content/uploads/2024/05/Electrino-One.jpg"],
-        f: { range:"70 Km", motor:"250W BLDC", battery:"Lithium-Ion", speed:"25 Km/h", charge:"3-4 Hrs", fbrake:"Disc", rbrake:"Drum", tyre:"10\" Tubeless", load:"150 Kg", light:"LED", lock:"Yes", usb:"Yes", rev:"Yes", climb:"15°", ground:"170mm", display:"Digital", storage:"15L", anti:"Yes", cruise:"Yes", app:"No" }
+        f: { range:"70 Km", motor:"250W BLDC", battery:"Lithium", speed:"25 Km/h", charge:"4-5 Hrs", fbrake:"Disc", rbrake:"Drum", tyre:"10\" Tubeless", load:"150 Kg", light:"LED", lock:"Yes", usb:"Yes", rev:"Yes", climb:"12°", ground:"170mm", display:"Digital", storage:"Yes", anti:"Yes", cruise:"Yes", app:"No" }
     },
     {
         name: "Electrino Dual", price: "58,000", imgs: ["https://www.electrino.in/wp-content/uploads/2024/05/Electrino-Dual_1.jpg", "https://www.electrino.in/wp-content/uploads/2024/05/Electrino-Dual_2.jpg", "https://www.electrino.in/wp-content/uploads/2024/05/Electrino-Dual_3.jpg", "https://www.electrino.in/wp-content/uploads/2024/05/Electrino-Dual_1.jpg"],
-        f: { range:"100 Km", motor:"High Torque", battery:"60V 32Ah", speed:"25 Km/h", charge:"6-8 Hrs", fbrake:"Disc", rbrake:"Drum", tyre:"12\" F / 10\" R", load:"160 Kg", light:"LED", lock:"Yes", usb:"Yes", rev:"Yes", climb:"12°", ground:"160mm", display:"Digital", storage:"Yes", anti:"Yes", cruise:"Yes", app:"No" }
+        f: { range:"100 Km", motor:"250 BLDC", battery:"Lithium", speed:"25 Km/h", charge:"5-6 Hrs", fbrake:"Disc", rbrake:"Drum", tyre:"12\" F / 10\" R", load:"160 Kg", light:"LED", lock:"Yes", usb:"Yes", rev:"Yes", climb:"12°", ground:"170mm", display:"Digital", storage:"Yes", anti:"Yes", cruise:"Yes", app:"No" }
     },
     {
         name: "Electrino Core", price: "67,500", imgs: ["https://www.electrino.in/wp-content/uploads/2024/05/4-1.jpg", "https://www.electrino.in/wp-content/uploads/2024/05/3-1-300x300.jpg", "https://www.electrino.in/wp-content/uploads/2024/05/2-1.jpg", "https://www.electrino.in/wp-content/uploads/2024/05/4-1.jpg"],
-        f: { range:"100-110 Km", motor:"250W Peak", battery:"60V Lithium", speed:"25 Km/h", charge:"4-5 Hrs", fbrake:"Disc", rbrake:"Disc", tyre:"12\" Tubeless", load:"180 Kg", light:"Crystal LED", lock:"Yes", usb:"Yes", rev:"Yes", climb:"18°", ground:"180mm", display:"Digital", storage:"22L", anti:"Yes", cruise:"Yes", app:"No" }
+        f: { range:"100-110 Km", motor:"250W BLDC", battery:"Lithium", speed:"25 Km/h", charge:"4-5 Hrs", fbrake:"Disc", rbrake:"Disc", tyre:"12\" Tubeless", load:"180 Kg", light:"LED", lock:"Yes", usb:"Yes", rev:"Yes", climb:"12°", ground:"180mm", display:"Digital", storage:"Yes", anti:"Yes", cruise:"Yes", app:"No" }
     },
     {
         name: "Electrino Crown", price: "70,500", imgs: ["https://www.electrino.in/wp-content/uploads/2024/05/Electrino-Crown_4.jpg", "https://www.electrino.in/wp-content/uploads/2024/05/Electrino-Crown_3.jpg", "https://www.electrino.in/wp-content/uploads/2024/05/Electrino-Crown_2.jpg", "https://www.electrino.in/wp-content/uploads/2024/05/Electrino-Crown_4.jpg"],
-        f: { range:"120 Km", motor:"250W BLDC", battery:"Lithium", speed:"25 Km/h", charge:"5 Hrs", fbrake:"Disc+CBS", rbrake:"Disc", tyre:"12\" Alloy", load:"200 Kg", light:"LED", lock:"Yes", usb:"Yes", rev:"Yes", climb:"20°", ground:"175mm", display:"Digital", storage:"Yes", anti:"Yes", cruise:"Yes", app:"No" }
+        f: { range:"120 Km", motor:"250W BLDC", battery:"Lithium", speed:"25 Km/h", charge:"5 Hrs", fbrake:"Disc", rbrake:"Disc", tyre:"12\" Tubeless", load:"200 Kg", light:"LED", lock:"Yes", usb:"Yes", rev:"Yes", climb:"12°", ground:"175mm", display:"Digital", storage:"Yes", anti:"Yes", cruise:"Yes", app:"No" }
     },
     {
         name: "Active Pro", price: "70,500", imgs: ["https://www.electrino.in/wp-content/uploads/2024/05/4.jpg", "https://www.electrino.in/wp-content/uploads/2024/05/3.jpg", "https://www.electrino.in/wp-content/uploads/2024/05/2.jpg", "https://www.electrino.in/wp-content/uploads/2024/05/4.jpg"],
-        f: { range:"100 Km", motor:"250W BLDC", battery:"60V Lithium", speed:"25 Km/h", charge:"5 Hrs", fbrake:"Disc", rbrake:"Disc", tyre:"Tubeless R12", load:"180 Kg", light:"LED DRL", lock:"Yes", usb:"Yes", rev:"Yes", climb:"15°", ground:"170mm", display:"Digital", storage:"Front Box", anti:"Yes", cruise:"Yes", app:"No" }
+        f: { range:"100 Km", motor:"250W BLDC", battery:"Lithium", speed:"25 Km/h", charge:"5 Hrs", fbrake:"Disc", rbrake:"Disc", tyre:" 12\"Tubeless", load:"180 Kg", light:"LED", lock:"Yes", usb:"Yes", rev:"Yes", climb:"12°", ground:"170mm", display:"Digital", storage:"Front Box", anti:"Yes", cruise:"Yes", app:"No" }
     }
 ];
 
@@ -246,20 +296,33 @@ const sidebar = document.getElementById('sidebarList');
 function update(idx) {
     const m = modelData[idx];
     document.querySelectorAll('.m-card').forEach((c, i) => c.className = i === idx ? 'm-card active' : 'm-card');
-    document.getElementById('mName').innerText = m.name;
-    document.getElementById('mPrice').innerText = '₹' + m.price;
-    document.getElementById('mainView').src = m.imgs[0];
     
-    const tBox = document.getElementById('thumbList'); tBox.innerHTML = '';
-    m.imgs.forEach(s => { const t = document.createElement('img'); t.src = s; t.style.width="40px"; t.style.borderRadius="6px"; t.style.border="2px solid #ddd"; t.onclick = () => document.getElementById('mainView').src = s; tBox.appendChild(t); });
-    
-    const sBox = document.getElementById('mSpecs'); sBox.innerHTML = '';
-    masterFeatures.forEach(feat => {
-        const val = m.f[feat.id];
-        const isNo = val === "No";
-        sBox.innerHTML += `<div class="spec-tile ${isNo ? 'no-feat' : ''}"><i class="fas ${feat.i}" style="background:${feat.c}"></i><div><label>${feat.l}</label><span>${val}</span></div></div>`;
-    });
-    document.getElementById('waLink').href = `https://wa.me/918941875809?text=Interested in ${m.name}`;
+    const content = document.getElementById('mainContent');
+    content.style.opacity = "0";
+
+    setTimeout(() => {
+        document.getElementById('mName').innerText = m.name;
+        document.getElementById('mPrice').innerText = '₹' + m.price;
+        document.getElementById('mainView').src = m.imgs[0];
+        
+        const tBox = document.getElementById('thumbList'); tBox.innerHTML = '';
+        m.imgs.forEach(s => { 
+            const t = document.createElement('img'); 
+            t.src = s; t.style.width="40px"; t.style.borderRadius="6px"; t.style.border="2px solid #ddd"; 
+            t.onclick = () => document.getElementById('mainView').src = s; 
+            tBox.appendChild(t); 
+        });
+        
+        const sBox = document.getElementById('mSpecs'); sBox.innerHTML = '';
+        masterFeatures.forEach(feat => {
+            const val = m.f[feat.id];
+            const isNo = val === "No";
+            sBox.innerHTML += `<div class="spec-tile ${isNo ? 'no-feat' : ''}"><i class="fas ${feat.i}" style="background:${feat.c}"></i><div><label>${feat.l}</label><span>${val}</span></div></div>`;
+        });
+        document.getElementById('waLink').href = `https://wa.me/918941875809?text=Interested in ${m.name}`;
+        
+        content.style.opacity = "1";
+    }, 200);
 }
 
 modelData.forEach((m, i) => {
