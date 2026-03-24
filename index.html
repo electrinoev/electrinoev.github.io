@@ -36,6 +36,12 @@
         .thumbs img { width: 55px; height: 55px; border-radius: 8px; cursor: pointer; border: 2px solid #eee; object-fit: cover; }
         .thumbs img.active-t { border-color: var(--p); transform: scale(1.1); }
 
+        /* Savings Calculator Styling */
+        .savings-box { background: #ecfdf5; border: 1px dashed #10b981; border-radius: 12px; padding: 15px; margin: 20px 0; }
+        .savings-title { font-size: 12px; font-weight: 800; color: #065f46; margin-bottom: 10px; display: flex; align-items: center; gap: 5px; }
+        .calc-input { width: 100%; margin: 10px 0; accent-color: #10b981; }
+        .savings-result { font-size: 14px; font-weight: 700; color: #047857; text-align: center; background: #fff; padding: 8px; border-radius: 8px; }
+
         .warranty-box { margin-top: 20px; background: #fffaf0; border: 1px solid #feebcb; border-radius: 12px; padding: 15px; }
         .warranty-title { font-size: 12px; font-weight: 800; color: #975a16; text-transform: uppercase; margin-bottom: 10px; display: flex; align-items: center; gap: 5px; }
         .w-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
@@ -48,6 +54,13 @@
         .spec-item { background: #f8fafc; padding: 10px; border-radius: 10px; border: 1px solid #f1f5f9; }
         .spec-item label { font-size: 9px; color: var(--text-light); font-weight: 800; display: block; }
         .spec-item span { font-weight: 700; font-size: 12px; }
+
+        /* Testimonial Styling */
+        .testimonials { margin-top: 30px; border-top: 2px solid #f1f5f9; padding-top: 20px; }
+        .t-card { background: #fff; border: 1px solid #eee; padding: 12px; border-radius: 15px; margin-bottom: 10px; display: flex; gap: 10px; align-items: center; }
+        .t-card i { color: #fbbf24; font-size: 12px; }
+        .t-user-info h4 { margin: 0; font-size: 13px; }
+        .t-user-info p { margin: 0; font-size: 11px; color: var(--text-light); }
 
         .btn-buy { width: 100%; padding: 16px; border-radius: 12px; border: none; font-weight: 800; cursor: pointer; font-size: 14px; margin-top: 10px; display: flex; align-items: center; justify-content: center; gap: 8px; }
 
@@ -67,7 +80,7 @@
 
 <nav>
     <div class="nav-content">
-        <div class="logo"><h1>Rawat Associates</h1><span>Official Electrino Dealer<br>KotdwaraUttarakhand</span></div>
+        <div class="logo"><h1>Rawat Associates</h1><span>Official Electrino Dealer<br>Kotdwara Uttarakhand</span></div>
     </div>
 </nav>
 
@@ -89,6 +102,13 @@
             <div class="price" id="pPrice"></div>
         </div>
 
+        <div class="savings-box">
+            <div class="savings-title"><i class="fas fa-piggy-bank"></i> MONTHLY SAVINGS CALCULATOR</div>
+            <label style="font-size: 10px; font-weight: 700;">Daily Riding: <span id="kmLabel">30</span> Km</label>
+            <input type="range" min="10" max="100" value="30" class="calc-input" oninput="updateSavings(this.value)">
+            <div class="savings-result">Save Approx <span id="saveAmount">₹2,100</span> Every Month!</div>
+        </div>
+
         <div class="warranty-box">
             <div class="warranty-title"><i class="fas fa-shield-alt"></i> Standard Warranty</div>
             <div class="w-grid">
@@ -101,6 +121,26 @@
 
         <div class="specs-grid" id="specs"></div>
         <div id="actionArea"></div>
+
+        <div class="testimonials">
+            <h3 style="font-size: 16px; margin-bottom: 15px;">Happy Customers in Kotdwara</h3>
+            <div class="t-card">
+                <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" width="40">
+                <div class="t-user-info">
+                    <h4>Manoj Rawat</h4>
+                    <div><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+                    <p>"Electrino Dual Zero noise and very smooth ride. Highly recommended!"</p>
+                </div>
+            </div>
+            <div class="t-card">
+                <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" width="40">
+                <div class="t-user-info">
+                    <h4>Sandeep Negi</h4>
+                    <div><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+                    <p>"Best Service In Kotdwar  Or Bachat hi bachat! Petrol ka kharcha khatam."</p>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -118,11 +158,19 @@
             
             <div id="variantSection" style="display:none;">
                 <label style="font-size: 11px; font-weight: 800; color: var(--p);">CHOOSE RANGE VARIANT:</label>
-                <select name="RangeVariant" id="rangeSelect" onchange="toggleWarranty()">
+                <select name="RangeVariant" id="rangeSelect">
                     <option value="60km (48000)">60km* Range (₹48,000)</option>
                     <option value="100km (50000)">100km* Range (₹50,000)</option>
                 </select>
             </div>
+
+            <label style="font-size: 11px; font-weight: 800; color: var(--p);">CHOOSE COLOR:</label>
+            <select name="ColorChoice">
+                <option value="Matte Black">Matte Black (Classic)</option>
+                <option value="Glossy Red">Glossy Red</option>
+                <option value="Crystal White">Crystal White</option>
+                <option value="Ocean Blue">Ocean Blue</option>
+            </select>
 
             <div id="warrantySection" style="display:none; margin-top: 10px;">
                 <label style="font-size: 11px; font-weight: 800; color: #975a16;">BATTERY WARRANTY PLAN:</label>
@@ -146,10 +194,17 @@
 const models = [
     { name: "Electrino One", price: "48,000", inStock: true, imgs: ["https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTPXO_E2LkncbwV4rhwUbx4NxhqUoDTecNnz-w9r7p3frmVgACDG2ht1l4&s=10", "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS4HNDSIUKrfHlCE5VYwh2EM5tYDgqzY7PuANIaqtpLzp4i_p1z3EkyAiY&s=10", "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSBXNLFcORF5io4-pjzrBzJc5t7am0Z-FXHSXIaM3x5E5csqRzctsB5ldFC&s=10"], f: {range:"60-100 Km", speed:"25 Km/h", battery:"Lithium", tyres:"10\" Tubeless",Key:"Remote Key Or Manual", Delivery:"7 Days Delivery"} },
     { name: "Electrino Dual", price: "58,000", inStock: true, imgs: ["https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS7flBwweiz34DQuo5mKb8lsSgqhessksBARB923i2y_wBZxMSeTjohchqZ&s=10", "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSoJG3FbMgejiFwW2awB6mddsUx0yqer9gn6iESz-ByobqZolvzHR5t3DE&s=10"], f: {range:"100 Km", motor:"250W BLDC", battery:"Lithium", braking:"Disc/Drum", Delivery:"7 Days Delivery"} },
-    { name: "Electrino Core", price: "67,500", inStock: false, imgs: ["https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTYbGD3iqUoHDRvHN7HP2E3nbzTw-JtCtIOag5-9LMhSLIb2ugF2cQF9dM&s=10", "https://5.imimg.com/data5/SELLER/Default/2026/1/578946922/VF/JU/ZK/140597938/electrino-core-electric-scooter.jpg"], f: {range:"110 Km", speed:"25 Km/h", battery:"LFP", suspension:"Smooth", Delivery:"7 Days Delivery"} },
+    { name: "Electrino Core", price: "67,500", inStock: false, imgs: ["https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTYbGD3iqUoHDRvHN7HP2E3nbzTw-JtCtIOag5-9LMhSLIb2ugF2cQF9dM&s=10", "https://5.imimg.com/data5/SELLER/Default/2026/1/578946922/VF/JU/ZK/140597938/electrino-core-electric-scooter.jpg"], f: {range:"110 Km", speed:"25 Km/h", battery:"Lithium", suspension:"Smooth", Delivery:"7 Days Delivery"} },
     { name: "Electrino Crown", price: "70,500", inStock: false, imgs: ["https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcToxcZRipyr8fuRWZSw3JP1YwqwHJh8Zf0Z-OBg9WJCIyMKxOcQAuyPdzIN&s=10", "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR6itZDKavxQtOxXwy_38F08kywe50se8xMazflVaTuaAbCPHg5MzSjo7M&s=10"], f: {range:"120 Km", motor:"Waterproof", safety:"Remote Lock", light:"LED", Delivery:"7 Days Delivery"} },
     { name: "Active Pro", price: "70,500", inStock: false, imgs: ["https://5.imimg.com/data5/SELLER/Default/2024/5/419064735/TK/TC/PC/125107375/whatsapp-image-2024-05-15-at-12-45-38-pm-1.jpeg"], f: {range:"100 Km", features:"USB Charging", battery:"Lithium", storage:"Large Boot", Delivery:"7 Days Delivery"} }
 ];
+
+function updateSavings(km) {
+    document.getElementById('kmLabel').innerText = km;
+    // Calculation: Petrol @₹2.5/km vs EV @₹0.15/km
+    let saving = Math.round(km * 30 * (2.5 - 0.15));
+    document.getElementById('saveAmount').innerText = '₹' + saving.toLocaleString('en-IN');
+}
 
 function loadSidebar() {
     const sb = document.getElementById('sidebar');
@@ -186,30 +241,21 @@ function showProduct(i) {
 
 function changeImg(el) { document.getElementById('mainImg').src = el.src; document.querySelectorAll('.thumbs img').forEach(t => t.classList.remove('active-t')); el.classList.add('active-t'); }
 
-// Function to handle warranty logic based on range selection
-function toggleWarranty() {
-    const rangeValue = document.getElementById('rangeSelect').value;
-    const warrantySec = document.getElementById('warrantySection');
-    // Show warranty ONLY for 100km variant
-    if(rangeValue.includes("100km")) {
-        warrantySec.style.display = 'block';
-    } else {
-        warrantySec.style.display = 'none';
-    }
-}
-
 function openOrder(type) { 
     const currentModel = document.getElementById('pName').innerText;
     document.getElementById('modalTitle').innerText = type; 
     document.getElementById('fType').value = type; 
     document.getElementById('fModel').value = currentModel; 
     
-    // Variant selection for Electrino One
-    if(currentModel === "Electrino One" && type !== 'EMI INQUIRY') {
+    if(currentModel === "Electrino One" && (type === 'ORDER BOOKING' || type === 'TEST RIDE')) {
         document.getElementById('variantSection').style.display = 'block';
-        toggleWarranty(); // Check warranty status immediately
     } else {
         document.getElementById('variantSection').style.display = 'none';
+    }
+
+    if(type === 'ORDER BOOKING') {
+        document.getElementById('warrantySection').style.display = 'block';
+    } else {
         document.getElementById('warrantySection').style.display = 'none';
     }
     
