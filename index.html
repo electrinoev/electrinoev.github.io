@@ -13,8 +13,12 @@
 
         nav { background: #fff; padding: 10px 20px; border-bottom: 1px solid #eee; position: sticky; top: 0; z-index: 1000; }
         .nav-content { display: flex; justify-content: space-between; align-items: center; max-width: 1300px; margin: 0 auto; }
-        .logo h1 { margin: 0; font-size: 18px; font-weight: 800; }
-        .logo span { color: var(--p); font-size: 10px; font-weight: 700; text-transform: uppercase; }
+        
+        /* Updated Logo Styles */
+        .logo { display: flex; align-items: center; gap: 12px; }
+        .logo-img { width: 45px; height: 45px; object-fit: contain; border-radius: 6px; }
+        .logo-text h1 { margin: 0; font-size: 18px; font-weight: 800; line-height: 1.2; }
+        .logo-text span { color: var(--p); font-size: 10px; font-weight: 700; text-transform: uppercase; display: block; }
 
         .trust-strip { background: #f1f5f9; padding: 8px; display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; border-bottom: 1px solid #e2e8f0; }
         .t-badge { font-size: 10px; font-weight: 700; color: #475569; display: flex; align-items: center; gap: 5px; }
@@ -36,7 +40,6 @@
         .thumbs img { width: 55px; height: 55px; border-radius: 8px; cursor: pointer; border: 2px solid #eee; object-fit: cover; }
         .thumbs img.active-t { border-color: var(--p); transform: scale(1.1); }
 
-        /* Savings Calculator Styling */
         .savings-box { background: #ecfdf5; border: 1px dashed #10b981; border-radius: 12px; padding: 15px; margin: 20px 0; }
         .savings-title { font-size: 12px; font-weight: 800; color: #065f46; margin-bottom: 10px; display: flex; align-items: center; gap: 5px; }
         .calc-input { width: 100%; margin: 10px 0; accent-color: #10b981; }
@@ -55,7 +58,6 @@
         .spec-item label { font-size: 9px; color: var(--text-light); font-weight: 800; display: block; }
         .spec-item span { font-weight: 700; font-size: 12px; }
 
-        /* Testimonial Styling */
         .testimonials { margin-top: 30px; border-top: 2px solid #f1f5f9; padding-top: 20px; }
         .t-card { background: #fff; border: 1px solid #eee; padding: 12px; border-radius: 15px; margin-bottom: 10px; display: flex; gap: 10px; align-items: center; }
         .t-card i { color: #fbbf24; font-size: 12px; }
@@ -80,7 +82,13 @@
 
 <nav>
     <div class="nav-content">
-        <div class="logo"><h1>Rawat Associates</h1><span>Official Electrino Dealer<br>Kotdwara Uttarakhand</span></div>
+        <div class="logo">
+            <img src="https://raw.githubusercontent.com/electrinoev/Electrino/refs/heads/main/images%20(8).jpeg" alt="Logo" class="logo-img">
+            <div class="logo-text">
+                <h1>Rawat Associates</h1>
+                <span>Official Electrino Dealer<br>Kotdwara Uttarakhand</span>
+            </div>
+        </div>
     </div>
 </nav>
 
@@ -201,7 +209,6 @@ const models = [
 
 function updateSavings(km) {
     document.getElementById('kmLabel').innerText = km;
-    // Calculation: Petrol @₹2.5/km vs EV @₹0.15/km
     let saving = Math.round(km * 30 * (2.5 - 0.15));
     document.getElementById('saveAmount').innerText = '₹' + saving.toLocaleString('en-IN');
 }
