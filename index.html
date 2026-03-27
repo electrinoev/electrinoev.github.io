@@ -229,8 +229,8 @@ function showProduct(i) {
     const area = document.getElementById('actionArea');
     if(m.inStock) {
         badge.innerText = "● Available in Kotdwara"; badge.style.color = "var(--success)";
-        area.innerHTML = `<button class="btn-buy" style="background:var(--dark); color:#fff" onclick="openOrder('ORDER BOOKING')"><i class="fas fa-shopping-bag"></i> BUY NOW (COD)</button>
-                          <button class="btn-buy" style="background:var(--success); color:#fff" onclick="openOrder('TEST RIDE')"><i class="fas fa-motorcycle"></i> BOOK FREE TEST RIDE</button>`;
+        area.innerHTML = `<button class="btn-buy" style="background:var(--dark); color:#fff" onclick="openOrder('ORDER BOOKING')"><i class="fas fa-shopping-bag"></i> CASH ON DELIVERY (BUY)</button>
+                          <button class="btn-buy" style="background:var(--success); color:#fff" onclick="openOrder('TEST RIDE')"><i class="fas fa-motorcycle"></i> BOOK FREE TEST RIDE AT HOME</button>`;
     } else {
         badge.innerText = "● Out of Stock"; badge.style.color = "var(--danger)";
         area.innerHTML = `<button class="btn-buy" style="background:#cbd5e1; color:#64748b; cursor:not-allowed;" disabled>TEMPORARILY OUT OF STOCK</button>
