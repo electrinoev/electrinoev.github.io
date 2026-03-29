@@ -8,29 +8,26 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <style>
         :root { --p: #4f46e5; --dark: #0f172a; --text-light: #64748b; --success: #22c55e; --danger: #ef4444; --bg: #f8fafc; }
-        * { box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
+        * { box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; scroll-behavior: smooth; }
         body { margin: 0; background-color: var(--bg); color: var(--dark); padding-bottom: 100px; }
 
         nav { background: #fff; padding: 10px 20px; border-bottom: 1px solid #eee; position: sticky; top: 0; z-index: 1000; }
         .nav-content { display: flex; justify-content: space-between; align-items: center; max-width: 1300px; margin: 0 auto; }
         
-        /* Updated Logo Styles */
         .logo { display: flex; align-items: center; gap: 12px; }
         .logo-img { width: 45px; height: 45px; object-fit: contain; border-radius: 6px; }
         .logo-text h1 { margin: 0; font-size: 18px; font-weight: 800; line-height: 1.2; }
         .logo-text span { color: var(--p); font-size: 10px; font-weight: 700; text-transform: uppercase; display: block; }
 
-        .trust-strip { background: #f1f5f9; padding: 8px; display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; border-bottom: 1px solid #e2e8f0; }
-        .t-badge { font-size: 10px; font-weight: 700; color: #475569; display: flex; align-items: center; gap: 5px; }
-        .t-badge i { color: var(--p); }
+        .v-strip { background: #1e293b; color: #fff; padding: 6px 15px; font-size: 10px; font-weight: 700; text-align: center; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #334155; }
 
         .store-container { display: flex; flex-direction: column; max-width: 1300px; margin: 0 auto; padding: 20px; gap: 20px; }
         @media (min-width: 992px) { .store-container { flex-direction: row; } .sidebar { width: 320px !important; } }
 
         .sidebar { background: #fff; border-radius: 20px; padding: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
-        .m-card { display: flex; align-items: center; padding: 10px; border-radius: 12px; margin-bottom: 8px; cursor: pointer; border: 2px solid #f1f5f9; position: relative; }
+        .m-card { display: flex; align-items: center; padding: 10px; border-radius: 12px; margin-bottom: 8px; cursor: pointer; border: 2px solid #f1f5f9; position: relative; transition: 0.3s; }
         .m-card.active { border-color: var(--p); background: #f5f3ff; }
-        .m-card img { width: 50px; height: 40px; object-fit: contain; }
+        .m-card img { width: 50px; height: 40px; object-fit: contain; margin-right: 10px; }
         .oos-tag { position: absolute; top: 5px; right: 5px; font-size: 8px; background: var(--danger); color: #fff; padding: 2px 5px; border-radius: 4px; font-weight: 800; }
 
         .product-view { flex: 1; background: #fff; border-radius: 20px; padding: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
@@ -41,41 +38,40 @@
         .thumbs img.active-t { border-color: var(--p); transform: scale(1.1); }
 
         .savings-box { background: #ecfdf5; border: 1px dashed #10b981; border-radius: 12px; padding: 15px; margin: 20px 0; }
-        .savings-title { font-size: 12px; font-weight: 800; color: #065f46; margin-bottom: 10px; display: flex; align-items: center; gap: 5px; }
-        .calc-input { width: 100%; margin: 10px 0; accent-color: #10b981; }
         .savings-result { font-size: 14px; font-weight: 700; color: #047857; text-align: center; background: #fff; padding: 8px; border-radius: 8px; }
-
-        .warranty-box { margin-top: 20px; background: #fffaf0; border: 1px solid #feebcb; border-radius: 12px; padding: 15px; }
-        .warranty-title { font-size: 12px; font-weight: 800; color: #975a16; text-transform: uppercase; margin-bottom: 10px; display: flex; align-items: center; gap: 5px; }
-        .w-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-        .w-item { font-size: 11px; font-weight: 600; color: #744210; background: #fff; padding: 5px 10px; border-radius: 6px; border: 1px solid #fbd38d; }
-
-        .price-row { display: flex; justify-content: space-between; align-items: center; margin: 15px 0; padding-top: 15px; border-top: 1px solid #f1f5f9; }
-        .price { font-size: 26px; font-weight: 800; color: var(--p); }
 
         .specs-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 10px; margin: 20px 0; }
         .spec-item { background: #f8fafc; padding: 10px; border-radius: 10px; border: 1px solid #f1f5f9; }
         .spec-item label { font-size: 9px; color: var(--text-light); font-weight: 800; display: block; }
         .spec-item span { font-weight: 700; font-size: 12px; }
 
-        .testimonials { margin-top: 30px; border-top: 2px solid #f1f5f9; padding-top: 20px; }
-        .t-card { background: #fff; border: 1px solid #eee; padding: 12px; border-radius: 15px; margin-bottom: 10px; display: flex; gap: 10px; align-items: center; }
-        .t-card i { color: #fbbf24; font-size: 12px; }
-        .t-user-info h4 { margin: 0; font-size: 13px; }
-        .t-user-info p { margin: 0; font-size: 11px; color: var(--text-light); }
+        /* Review Section Styles */
+        .reviews-section { margin-top: 40px; border-top: 1px solid #eee; padding-top: 25px; }
+        .google-header { display: flex; align-items: center; gap: 10px; margin-bottom: 20px; }
+        .review-card { background: #fff; border: 1px solid #e2e8f0; border-radius: 15px; padding: 15px; margin-bottom: 12px; }
+        .review-user { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+        .review-user img { width: 35px; height: 35px; border-radius: 50%; }
+        .review-stars { color: #fabb05; font-size: 12px; margin-bottom: 5px; }
+        .review-text { font-size: 13px; color: #475569; line-height: 1.5; }
 
         .btn-buy { width: 100%; padding: 16px; border-radius: 12px; border: none; font-weight: 800; cursor: pointer; font-size: 14px; margin-top: 10px; display: flex; align-items: center; justify-content: center; gap: 8px; }
 
         .mobile-actions { position: fixed; bottom: 0; left: 0; width: 100%; background: #fff; display: flex; box-shadow: 0 -4px 15px rgba(0,0,0,0.1); z-index: 5000; height: 75px; border-top: 1px solid #eee; }
         .act-btn { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; text-decoration: none; font-size: 11px; font-weight: 800; border-right: 1px solid #f1f5f9; }
         .act-call { color: #2563eb; }
-        .act-wa { color: #16a34a; border-right: none; }
+        .act-wa { color: #16a34a; }
+        .act-map { color: #dc2626; }
         .act-btn i { font-size: 20px; margin-bottom: 4px; }
 
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 6000; justify-content: center; align-items: center; padding: 15px; }
-        .modal-content { background: #fff; padding: 25px; border-radius: 20px; width: 100%; max-width: 400px; max-height: 90vh; overflow-y: auto; }
+        .modal-content { background: #fff; padding: 25px; border-radius: 20px; width: 100%; max-width: 400px; max-height: 95vh; overflow-y: auto; }
         input, textarea, select { width: 100%; padding: 12px; margin: 8px 0; border: 1px solid #ddd; border-radius: 10px; font-size: 14px; }
         .submit-btn { width: 100%; background: var(--p); color: #fff; padding: 15px; border: none; border-radius: 12px; font-weight: 800; cursor: pointer; }
+
+        .emi-display { background: #f0f4ff; border-radius: 12px; padding: 15px; margin: 15px 0; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .emi-box { text-align: center; background: #fff; padding: 10px; border-radius: 10px; border: 1px solid #dbeafe; }
+        .emi-box label { font-size: 10px; font-weight: 800; color: var(--text-light); }
+        .emi-box div { font-size: 15px; font-weight: 800; color: var(--p); }
     </style>
 </head>
 <body>
@@ -92,15 +88,20 @@
     </div>
 </nav>
 
-<div class="trust-strip">
-    <div class="t-badge"><i class="fas fa-shipping-fast"></i> MAKE IN INDIA</div>
-    <div class="t-badge"><i class="fas fa-bolt"></i> Low Maintenance</div>
-    <div class="t-badge"><i class="fas fa-map-marker-alt"></i> Service Center Kotdwara</div>
+<div class="v-strip">
+    <div><i class="fas fa-users"></i> VISITORS: <span id="vCount" style="color:#fbbf24">5240+</span></div>
+    <div id="userLocation"><i class="fas fa-spinner fa-spin"></i> Detecting City...</div>
 </div>
 
 <div class="store-container">
-    <div class="sidebar" id="sidebar"></div>
-    <div class="product-view">
+    <div class="sidebar">
+        <a href="Https://maps.app.goo.gl/GEfWi193AkQ5bEcr9" target="_blank" style="display: flex; align-items: center; justify-content: center; gap: 10px; background: #fff; border: 2px solid #dc2626; color: #dc2626; padding: 12px; border-radius: 12px; text-decoration: none; font-weight: 800; font-size: 13px; margin-bottom: 15px;">
+            <i class="fas fa-directions"></i> SHOP LOCATION (MAPS)
+        </a>
+        <div id="sidebarList"></div>
+    </div>
+    
+    <div class="product-view" id="productDetailView">
         <div class="gallery">
             <img id="mainImg" src="">
             <div class="thumbs" id="thumbs"></div>
@@ -111,88 +112,85 @@
         </div>
 
         <div class="savings-box">
-            <div class="savings-title"><i class="fas fa-piggy-bank"></i> MONTHLY SAVINGS CALCULATOR</div>
-            <label style="font-size: 10px; font-weight: 700;">Daily Riding: <span id="kmLabel">30</span> Km</label>
-            <input type="range" min="10" max="100" value="30" class="calc-input" oninput="updateSavings(this.value)">
-            <div class="savings-result">Save Approx <span id="saveAmount">₹2,100</span> Every Month!</div>
-        </div>
-
-        <div class="warranty-box">
-            <div class="warranty-title"><i class="fas fa-shield-alt"></i> Standard Warranty</div>
-            <div class="w-grid">
-                <div class="w-item">Battery: 3 Year</div>
-                <div class="w-item">Motor: 1 Year</div>
-                <div class="w-item">Controller: 1 Year</div>
-                <div class="w-item">Charger: 1 Year</div>
-            </div>
+            <div style="font-size:11px; font-weight:800; color:#065f46; margin-bottom:5px;"><i class="fas fa-piggy-bank"></i> MONTHLY SAVINGS CALCULATOR</div>
+            <input type="range" min="10" max="100" value="30" class="calc-input" style="width:100%; accent-color:#10b981;" oninput="updateSavings(this.value)">
+            <div class="savings-result">Daily <span id="kmLabel">30</span> Km ride = Save Approx <span id="saveAmount">₹2,100</span> / Month!</div>
         </div>
 
         <div class="specs-grid" id="specs"></div>
         <div id="actionArea"></div>
 
-        <div class="testimonials">
-            <h3 style="font-size: 16px; margin-bottom: 15px;">Happy Customers in Kotdwara</h3>
-            <div class="t-card">
-                <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" width="40">
-                <div class="t-user-info">
-                    <h4>Manoj Rawat</h4>
-                    <div><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
-                    <p>"Electrino Dual Zero noise and very smooth ride. Highly recommended!"</p>
+        <div class="reviews-section">
+            <div class="google-header">
+                <img src="https://raw.githubusercontent.com/electrinoev/Electrino/refs/heads/main/images%20(8).jpeg" width="60" alt="Google">
+                <div>
+                    <div style="font-weight: 800; font-size: 14px;">Customer Reviews</div>
+                    <div style="color:#fabb05; font-size:12px;"><i class="fas fa-star"></i> 5/5 (8 Reviews)</div>
                 </div>
             </div>
-            <div class="t-card">
-                <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" width="40">
-                <div class="t-user-info">
-                    <h4>Sandeep Negi</h4>
-                    <div><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
-                    <p>"Best Service In Kotdwar  Or Bachat hi bachat! Petrol ka kharcha khatam."</p>
+
+            <div class="review-card">
+                <div class="review-user">
+                    <img src="https://ui-avatars.com/api/?name=Amit+Negi&background=random" alt="Amit">
+                    <div style="font-weight: 700; font-size: 13px;">Amit Negi <i class="fas fa-check-circle" style="color:#34a853; font-size:10px;"></i></div>
                 </div>
+                <div class="review-stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+                <div class="review-text">Electrino One ki performance Kotdwar ke rasto par bahut badiya hai. Range bhi sahi mil rahi hai. Rawat Associates ki service fast hai.</div>
+            </div>
+
+            <div class="review-card">
+                <div class="review-user">
+                    <img src="https://ui-avatars.com/api/?name=Priya+Sharma&background=random" alt="Priya">
+                    <div style="font-weight: 700; font-size: 13px;">Priya Sharma <i class="fas fa-check-circle" style="color:#34a853; font-size:10px;"></i></div>
+                </div>
+                <div class="review-stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+                <div class="review-text">Best electric scooter in this budget. Dual model best hai family ke liye. Petrol ka kharcha zero ho gaya!</div>
             </div>
         </div>
     </div>
 </div>
 
 <div class="mobile-actions">
-    <a href="tel:7906109154" class="act-btn act-call"><i class="fas fa-phone-alt"></i> CALL NOW</a>
-    <a href="#" id="waLink" class="act-btn act-wa"><i class="fab fa-whatsapp"></i> WHATSAPP</a>
-    <div class="act-btn" style="color:var(--dark); cursor:pointer" onclick="openOrder('EMI INQUIRY')"><i class="fas fa-calculator"></i> EMI INFO</div>
+    <a href="Https://maps.app.goo.gl/GEfWi193AkQ5bEcr9" target="_blank" class="act-btn act-map"><i class="fas fa-map-marked-alt"></i> MAPS</a>
+    <a href="tel:7906109154" class="act-btn act-call"><i class="fas fa-phone-alt"></i> CALL</a>
+    <a href="https://wa.me/918941875809" class="act-btn act-wa" target="_blank"><i class="fab fa-whatsapp"></i> WHATSAPP</a>
+    <div class="act-btn" style="color:var(--dark); cursor:pointer" onclick="openOrder('EMI INQUIRY')"><i class="fas fa-calculator"></i> EMI</div>
 </div>
 
 <div class="modal" id="orderModal">
     <div class="modal-content">
-        <h3 id="modalTitle" style="margin:0 0 15px 0;"></h3>
-        <form action="https://formspree.io/f/xpqygnoz" method="POST">
-            <input type="hidden" name="Type" id="fType"><input type="hidden" name="Model" id="fModel">
+        <h3 id="modalTitle" style="margin:0 0 15px 0; color:var(--p);"></h3>
+        <form id="orderForm" onsubmit="handleOrder(event)">
+            <input type="hidden" id="fType"><input type="hidden" id="fModel">
             
-            <div id="variantSection" style="display:none;">
-                <label style="font-size: 11px; font-weight: 800; color: var(--p);">CHOOSE RANGE VARIANT:</label>
-                <select name="RangeVariant" id="rangeSelect">
-                    <option value="60km (48000)">60km* Range (₹48,000)</option>
-                    <option value="100km (50000)">100km* Range (₹50,000)</option>
-                </select>
-            </div>
-
-            <label style="font-size: 11px; font-weight: 800; color: var(--p);">CHOOSE COLOR:</label>
-            <select name="ColorChoice">
-                <option value="Matte Black">Matte Black (Classic)</option>
+            <label style="font-size: 11px; font-weight: 800;">CHOOSE COLOR:</label>
+            <select id="fColor">
+                <option value="Matte Black">Matte Black</option>
                 <option value="Glossy Red">Glossy Red</option>
                 <option value="Glossy Green">Glossy Green</option>
                 <option value="Ocean Blue">Ocean Blue</option>
             </select>
 
-            <div id="warrantySection" style="display:none; margin-top: 10px;">
-                <label style="font-size: 11px; font-weight: 800; color: #975a16;">BATTERY WARRANTY PLAN:</label>
-                <select name="ExtendedWarranty">
-                    <option value="Standard (3 Year)">Standard (3 Year Included)</option>
-                    <option value="Extended (3+1 Year) +₹4000">Extended (3+1 Year) + ₹4,000</option>
-                </select>
+            <label style="font-size: 11px; font-weight: 800; color: #975a16; margin-top:10px;">BATTERY WARRANTY:</label>
+            <select id="fWarranty" onchange="calculateEMI()">
+                <option value="Standard">Standard (3 Year Included)</option>
+                <option value="Extended">+1 Year Extra (Total 4 Year) [+₹4,000]</option>
+            </select>
+
+            <div id="emiSection" style="display:none; margin-top:15px; border-top: 1px dashed #ccc; padding-top:10px;">
+                <label style="font-size: 11px; font-weight: 800; color: #16a34a;">DOWN-PAYMENT (Min. ₹20,000):</label>
+                <input type="number" id="fDownpayment" value="20000" min="20000" oninput="calculateEMI()">
+                <div class="emi-display">
+                    <div class="emi-box"><label>6 MONTHS</label><div id="emi6">₹0</div></div>
+                    <div class="emi-box"><label>12 MONTHS</label><div id="emi12">₹0</div></div>
+                </div>
             </div>
 
-            <input type="text" name="Name" placeholder="Aapka Naam" required>
-            <input type="tel" name="Phone" placeholder="Mobile Number" pattern="[0-9]{10}" required>
-            <input type="text" name="Pincode" placeholder="Pincode" required>
-            <textarea name="Address" placeholder="Pura Pata (Address)" rows="3" required></textarea>
-            <button class="submit-btn">SEND REQUEST</button>
+            <input type="text" id="fName" placeholder="Aapka Naam" required>
+            <input type="tel" id="fPhone" placeholder="Mobile Number" required>
+            <textarea id="fAddress" placeholder="Pura Pata (Address)" rows="2" required></textarea>
+            
+            <button type="submit" class="submit-btn">SEND TO WHATSAPP</button>
             <p onclick="closeOrder()" style="text-align:center; color:red; margin-top:15px; cursor:pointer; font-weight:800;">CLOSE</p>
         </form>
     </div>
@@ -200,77 +198,100 @@
 
 <script>
 const models = [
-    { name: "Electrino One", price: "48,000", inStock: true, imgs: ["https://raw.githubusercontent.com/electrinoev/Electrino/refs/heads/main/1.jpg", "https://raw.githubusercontent.com/electrinoev/Electrino/refs/heads/main/2.jpg", "https://raw.githubusercontent.com/electrinoev/Electrino/refs/heads/main/3.jpg","https://raw.githubusercontent.com/electrinoev/Electrino/refs/heads/main/4.jpg","https://raw.githubusercontent.com/electrinoev/Electrino/refs/heads/main/5.jpg"], f: {range:"60-100 Km", speed:"25 Km/h", battery:"Lithium", tyres:"10\" Tubeless",Key:"Remote Key Or Manual", Delivery:"7 Days Delivery"} },
-    { name: "Electrino Dual", price: "58,000", inStock: true, imgs: ["https://raw.githubusercontent.com/electrinoev/Electrino/refs/heads/main/11.jpg", "https://raw.githubusercontent.com/electrinoev/Electrino/refs/heads/main/22.jpg","https://raw.githubusercontent.com/electrinoev/Electrino/refs/heads/main/33.jpg","https://raw.githubusercontent.com/electrinoev/Electrino/refs/heads/main/44.jpg"], f: {range:"100 Km", motor:"250W BLDC", battery:"Lithium", braking:"Disc/Drum", Delivery:"7 Days Delivery"} },
-    { name: "Electrino Core", price: "67,500", inStock: false, imgs: ["https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTYbGD3iqUoHDRvHN7HP2E3nbzTw-JtCtIOag5-9LMhSLIb2ugF2cQF9dM&s=10", "https://5.imimg.com/data5/SELLER/Default/2026/1/578946922/VF/JU/ZK/140597938/electrino-core-electric-scooter.jpg"], f: {range:"110 Km", speed:"25 Km/h", battery:"Lithium", suspension:"Smooth", Delivery:"7 Days Delivery"} },
-    { name: "Electrino Crown", price: "70,500", inStock: false, imgs: ["https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcToxcZRipyr8fuRWZSw3JP1YwqwHJh8Zf0Z-OBg9WJCIyMKxOcQAuyPdzIN&s=10", "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR6itZDKavxQtOxXwy_38F08kywe50se8xMazflVaTuaAbCPHg5MzSjo7M&s=10"], f: {range:"120 Km", motor:"Waterproof", safety:"Remote Lock", light:"LED", Delivery:"7 Days Delivery"} },
-    { name: "Active Pro", price: "70,500", inStock: false, imgs: ["https://5.imimg.com/data5/SELLER/Default/2024/5/419064735/TK/TC/PC/125107375/whatsapp-image-2024-05-15-at-12-45-38-pm-1.jpeg"], f: {range:"100 Km", features:"USB Charging", battery:"Lithium", storage:"Large Boot", Delivery:"7 Days Delivery"} }
+    { name: "Electrino One", price: 48000, inStock: true, imgs: ["https://raw.githubusercontent.com/electrinoev/Electrino/refs/heads/main/1.jpg", "https://raw.githubusercontent.com/electrinoev/Electrino/refs/heads/main/2.jpg", "https://raw.githubusercontent.com/electrinoev/Electrino/refs/heads/main/3.jpg","https://raw.githubusercontent.com/electrinoev/Electrino/refs/heads/main/4.jpg","https://raw.githubusercontent.com/electrinoev/Electrino/refs/heads/main/5.jpg"], f: {range:"60-100 Km*", speed:"25 Km/h", battery:"Lithium ION", tyres:"10\" Tubeless",Key:"Remote/Manual"} },
+    { name: "Electrino Dual", price: 58000, inStock: true, imgs: ["https://raw.githubusercontent.com/electrinoev/Electrino/refs/heads/main/11.jpg", "https://raw.githubusercontent.com/electrinoev/Electrino/refs/heads/main/22.jpg","https://raw.githubusercontent.com/electrinoev/Electrino/refs/heads/main/33.jpg","https://raw.githubusercontent.com/electrinoev/Electrino/refs/heads/main/44.jpg"], f: {range:"100 Km*", Speed:"25KM/h", battery:"Lithium ION", braking:"Disc/Drum"} },
+    { name: "Electrino Core", price: 67500, inStock: false, imgs: ["https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTYbGD3iqUoHDRvHN7HP2E3nbzTw-JtCtIOag5-9LMhSLIb2ugF2cQF9dM&s=10", "https://5.imimg.com/data5/SELLER/Default/2026/1/578946922/VF/JU/ZK/140597938/electrino-core-electric-scooter.jpg"], f: {range:"110 Km*", speed:"25 Km/h", battery:"Lithium ION", suspension:"Smooth"} },
+    { name: "Electrino Crown", price: 70500, inStock: false, imgs: ["https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcToxcZRipyr8fuRWZSw3JP1YwqwHJh8Zf0Z-OBg9WJCIyMKxOcQAuyPdzIN&s=10", "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR6itZDKavxQtOxXwy_38F08kywe50se8xMazflVaTuaAbCPHg5MzSjo7M&s=10"], f: {range:"120 Km*", motor:"Waterproof", safety:"Remote Lock", light:"LED"} },
+    { name: "Active Pro", price: 70500, inStock: false, imgs: ["https://5.imimg.com/data5/SELLER/Default/2024/5/419064735/TK/TC/PC/125107375/whatsapp-image-2024-05-15-at-12-45-38-pm-1.jpeg"], f: {range:"100 Km*", features:"USB Charging", battery:"Lithium", storage:"Large Boot"} }
 ];
 
-function updateSavings(km) {
-    document.getElementById('kmLabel').innerText = km;
-    let saving = Math.round(km * 30 * (2.5 - 0.15));
-    document.getElementById('saveAmount').innerText = '₹' + saving.toLocaleString('en-IN');
-}
+let currentP = 0;
 
 function loadSidebar() {
-    const sb = document.getElementById('sidebar');
+    const sb = document.getElementById('sidebarList');
+    sb.innerHTML = '';
     models.forEach((m, i) => {
-        sb.innerHTML += `<div class="m-card" onclick="showProduct(${i})">
+        sb.innerHTML += `<div class="m-card" onclick="showProduct(${i}, true)">
             ${!m.inStock ? '<span class="oos-tag">OUT OF STOCK</span>' : ''}
-            <img src="${m.imgs[0]}"><div class="m-card-info"><h3>${m.name}</h3><p style="margin:0; font-size:11px; color:var(--p); font-weight:800;">₹${m.price}</p></div></div>`;
+            <img src="${m.imgs[0]}"><div><h3 style="margin:0; font-size:14px;">${m.name}</h3><p style="margin:0; font-size:11px; color:var(--p); font-weight:800;">₹${m.price.toLocaleString()}</p></div></div>`;
     });
 }
 
-function showProduct(i) {
+function showProduct(i, shouldScroll = false) {
     const m = models[i];
+    currentP = m.price;
     document.querySelectorAll('.m-card').forEach((c, idx) => c.className = i === idx ? 'm-card active' : 'm-card');
     document.getElementById('pName').innerText = m.name;
-    document.getElementById('pPrice').innerText = '₹' + m.price;
+    document.getElementById('pPrice').innerText = '₹' + m.price.toLocaleString();
     document.getElementById('mainImg').src = m.imgs[0];
+    
     let th = ''; m.imgs.forEach((img, idx) => { th += `<img src="${img}" class="${idx===0?'active-t':''}" onclick="changeImg(this)">`; });
     document.getElementById('thumbs').innerHTML = th;
+    
     let sp = ''; for(let k in m.f) { sp += `<div class="spec-item"><label>${k}</label><span>${m.f[k]}</span></div>`; }
     document.getElementById('specs').innerHTML = sp;
-    const badge = document.getElementById('stockBadge');
+    
     const area = document.getElementById('actionArea');
     if(m.inStock) {
-        badge.innerText = "● Available in Kotdwara"; badge.style.color = "var(--success)";
-        area.innerHTML = `<button class="btn-buy" style="background:var(--dark); color:#fff" onclick="openOrder('ORDER BOOKING')"><i class="fas fa-shopping-bag"></i> CASH ON DELIVERY (BUY)</button>
-                          <button class="btn-buy" style="background:var(--success); color:#fff" onclick="openOrder('TEST RIDE')"><i class="fas fa-motorcycle"></i> BOOK FREE TEST RIDE AT HOME</button>`;
+        area.innerHTML = `<button class="btn-buy" style="background:var(--dark); color:#fff" onclick="openOrder('ORDER BOOKING')"><i class="fas fa-shopping-bag"></i> BUY NOW (CASH ON DELIVERY)</button>
+                          <button class="btn-buy" style="background:var(--success); color:#fff" onclick="openOrder('FREE TEST RIDE')"><i class="fas fa-motorcycle"></i> BOOK FREE TEST RIDE AT HOME</button>
+                          <button class="btn-buy" style="background:var(--p); color:#fff" onclick="openOrder('EMI INQUIRY')"><i class="fas fa-calculator"></i> CALCULATE EMI</button>`;
     } else {
-        badge.innerText = "● Out of Stock"; badge.style.color = "var(--danger)";
-        area.innerHTML = `<button class="btn-buy" style="background:#cbd5e1; color:#64748b; cursor:not-allowed;" disabled>TEMPORARILY OUT OF STOCK</button>
-                          <button class="btn-buy" style="background:var(--p); color:#fff" onclick="openOrder('NOTIFY ME')"><i class="fas fa-bell"></i> NOTIFY ME WHEN AVAILABLE</button>`;
+        area.innerHTML = `<button class="btn-buy" style="background:var(--p); color:#fff" onclick="openOrder('NOTIFY ME')"><i class="fas fa-bell"></i> NOTIFY ME WHEN AVAILABLE</button>`;
     }
-    document.getElementById('waLink').href = `https://wa.me/918941875809?text=Interested in Electrino ${m.name}`;
+
+    if(shouldScroll) {
+        const detailSection = document.getElementById('productDetailView');
+        window.scrollTo({ top: detailSection.offsetTop - 80, behavior: 'smooth' });
+    }
 }
 
-function changeImg(el) { document.getElementById('mainImg').src = el.src; document.querySelectorAll('.thumbs img').forEach(t => t.classList.remove('active-t')); el.classList.add('active-t'); }
+function calculateEMI() {
+    let dp = parseInt(document.getElementById('fDownpayment').value) || 20000;
+    if(dp < 20000) dp = 20000;
+    let extra = document.getElementById('fWarranty').value === "Extended" ? 4000 : 0;
+    let loan = (currentP + extra) - dp;
+    if(loan < 0) loan = 0;
+    document.getElementById('emi6').innerText = '₹' + Math.round(loan/6).toLocaleString();
+    document.getElementById('emi12').innerText = '₹' + Math.round(loan/12).toLocaleString();
+}
 
-function openOrder(type) { 
-    const currentModel = document.getElementById('pName').innerText;
-    document.getElementById('modalTitle').innerText = type; 
-    document.getElementById('fType').value = type; 
-    document.getElementById('fModel').value = currentModel; 
-    
-    if(currentModel === "Electrino One" && (type === 'ORDER BOOKING' || type === 'TEST RIDE')) {
-        document.getElementById('variantSection').style.display = 'block';
-    } else {
-        document.getElementById('variantSection').style.display = 'none';
-    }
+function openOrder(type) {
+    document.getElementById('modalTitle').innerText = type;
+    document.getElementById('fType').value = type;
+    document.getElementById('fModel').value = document.getElementById('pName').innerText;
+    document.getElementById('emiSection').style.display = (type === 'EMI INQUIRY') ? 'block' : 'none';
+    if(type === 'EMI INQUIRY') calculateEMI();
+    document.getElementById('orderModal').style.display = 'flex';
+}
 
-    if(type === 'ORDER BOOKING') {
-        document.getElementById('warrantySection').style.display = 'block';
-    } else {
-        document.getElementById('warrantySection').style.display = 'none';
-    }
-    
-    document.getElementById('orderModal').style.display = 'flex'; 
+function handleOrder(e) {
+    e.preventDefault();
+    const type = document.getElementById('fType').value;
+    const model = document.getElementById('fModel').value;
+    const name = document.getElementById('fName').value;
+    const phone = document.getElementById('fPhone').value;
+    const addr = document.getElementById('fAddress').value;
+    const emiMsg = type === 'EMI INQUIRY' ? `%0A*Downpayment:* ₹${document.getElementById('fDownpayment').value}%0A*EMI 6M:* ${document.getElementById('emi6').innerText}%0A*EMI 12M:* ${document.getElementById('emi12').innerText}` : "";
+    const finalMsg = `*New ${type}*%0A---%0A*Model:* ${model}%0A*Name:* ${name}%0A*Phone:* ${phone}%0A*Address:* ${addr}${emiMsg}`;
+    window.open(`https://wa.me/918941875809?text=${finalMsg}`, '_blank');
 }
 
 function closeOrder() { document.getElementById('orderModal').style.display = 'none'; }
-window.onload = () => { loadSidebar(); showProduct(0); }
+function changeImg(el) { document.getElementById('mainImg').src = el.src; document.querySelectorAll('.thumbs img').forEach(t => t.classList.remove('active-t')); el.classList.add('active-t'); }
+function updateSavings(km) { document.getElementById('kmLabel').innerText = km; document.getElementById('saveAmount').innerText = '₹' + Math.round(km * 30 * 2.35).toLocaleString(); }
+
+window.onload = () => {
+    loadSidebar();
+    showProduct(0, false);
+    let count = localStorage.getItem('vits') || 5240;
+    count = parseInt(count) + 1;
+    localStorage.setItem('vits', count);
+    document.getElementById('vCount').innerText = count.toLocaleString() + "+";
+    fetch('https://ipapi.co/json/').then(r => r.json()).then(d => {
+        document.getElementById('userLocation').innerHTML = `<i class="fas fa-location-arrow" style="color:#22c55e"></i> VISITING FROM: ${d.city.toUpperCase()}`;
+    }).catch(() => document.getElementById('userLocation').innerText = "WELCOME TO RAWAT ASSOCIATES");
+}
 </script>
 </body>
 </html>
